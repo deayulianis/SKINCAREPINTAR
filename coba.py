@@ -121,7 +121,7 @@ skin_problem_info = {
     },
     "kulit kusam atau noda hitam": {
         "desc": "Ciri utamanya adalah warna kulit yang tidak merata, tampak gelap, lelah, atau kurang bercahaya. Hal ini biasanya disebabkan oleh penumpukan sel kulit mati, paparan sinar matahari, kurang hidrasi, atau polusi lingkungan.",
-        "img": "dull_skin_face_22.jpg"
+        "img": "https://github.com/deayulianis/Penelitian-Ilmiah/blob/main/dull_skin_face_22.jpg"
     },
     "tanda-tanda penuaan": {
         "desc": "Ditandai dengan munculnya kerutan halus, garis-garis wajah, atau flek hitam. Gejala ini umumnya muncul seiring bertambahnya usia atau akibat paparan sinar UV dalam jangka panjang yang merusak struktur kolagen kulit.",
@@ -133,7 +133,7 @@ skin_problem_info = {
     },
     "kulit kering atau Dehidrasi": {
         "desc": "Ciri visualnya meliputi tekstur kulit yang kasar, bersisik, terlihat pecah-pecah, dan mudah mengelupas. Kondisi ini disebabkan oleh kurangnya kadar air dalam lapisan kulit dan bisa dipicu oleh cuaca dingin, kurangnya kelembapan, atau sabun yang terlalu keras.",
-        "img": "dry_skin_face_2.jpeg"
+        "img": "https://github.com/deayulianis/Penelitian-Ilmiah/blob/main/dry_skin_face_2.jpeg"
     },
     "produksi minyak berlebih": {
         "desc": "Ditunjukkan oleh permukaan wajah yang tampak mengilap, terutama di area T-zone (dahi, hidung, dan dagu). Hal ini disebabkan oleh aktivitas kelenjar sebaceous yang memproduksi sebum dalam jumlah berlebihan.",
