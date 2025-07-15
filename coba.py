@@ -16,7 +16,7 @@ st.title("🧴 Aplikasi Skincare Pintar")
 # Load Model & Dataset
 # ================================
 model = load_model("model50.h5", compile=False)
-df = pd.read_csv("https://raw.githubusercontent.com/deayulianis/Penelitian-Ilmiah/refs/heads/main/dataset%20produk%20rekomendasi%20skincare/Skin%20Care%20Product%20-%20MP-Skin%20Care%20Product%20Recommendation%20System3.csv.csv")
+df = pd.read_csv("https://raw.githubusercontent.com/deayulianis/coba/refs/heads/main/Skin%20Care%20Product.csv.csv")
 
 # ================================
 # Daftar Kelas dan Mapping
@@ -32,30 +32,66 @@ skin_classes = [
 ]
 
 problem_to_effects = {
-    "jerawat": ["Acne-Free", "Anti-Acne", "Soothing"],
-    "kulit_kering_dehidrasi": ["Moisturizing", "Hydrating", "Deep Moisture"],
-    "kulit_kusam_noda_hitam": ["Brightening", "Glowing", "Whitening", "UV-Protection", "Even Skin Tone"],
-    "kulit_sensitif_iritasi": ["Soothing", "Calming", "Anti-Redness"],
-    "pori_pori_besar": ["Pore-Care", "Minimizing Pores"],
-    "produksi_minyak_berlebih": ["Oil Control", "Balancing", "Sebum Control"],
-    "tanda_tanda_penuaan": ["Anti-Aging", "Firming", "Wrinkle Care"]
+    "jerawat": [
+        "Acne-Prone", "Acne-Free", "Anti-Acne", "Anti-Inflammatory", "Soothing",
+        "Exfoliating", "Oil-Control", "Sebum Control", "Non-Comedogenic", "Barrier Repair"
+    ],
+    "kulit_kering_dehidrasi": [
+        "Moisturizing", "Hydrating", "Hydrating Support", "Deep Moisture",
+        "Skin Barrier Support", "Barrier Repair"
+    ],
+    "kulit_kusam_noda_hitam": [
+        "Brightening", "Glowing", "Whitening", "Dark Spot Fading",
+        "Even Skin Tone", "Antioxidant", "UV-Protection"
+    ],
+    "kulit_sensitif_iritasi": [
+        "Sensitive-Friendly", "Calming", "Soothing", "Anti-Redness",
+        "Anti-Inflammatory", "Anti-Irritation", "Skin Barrier Support", "Gentle Formula", "Ph-Balancing"
+    ],
+    "pori_pori_besar": [
+        "Minimizing Pores", "Pore-Care", "Skin-Smoothing",
+        "Exfoliating", "Sebum Control", "Non-Comedogenic"
+    ],
+    "produksi_minyak_berlebih": [
+        "Oil-Control", "Sebum Control", "Balancing", "Exfoliating", "Ph-Balancing"
+    ],
+    "tanda_tanda_penuaan": [
+        "Anti-Aging", "Wrinkle Care", "Firming", "Regeneration Boost",
+        "Skin Barrier Support", "Deep Moisture", "Antioxidant"
+    ]
 }
 
 effect_mapping = {
     "soothing & calming": "Soothing",
     "calming / soothing": "Soothing",
-    "soothingglowing": "Soothing",
-    "brighteningdark spot fading": "Brightening",
+    "soothingglowing": "Soothing, Glowing",
+    "brighteningdark spot fading": "Brightening, Dark Spot Fading",
     "anti-aging ringan": "Anti-Aging",
-    "mild oil-control": "Oil Control",
+    "mild oil-control": "Oil-Control",
     "moisturizing.": "Moisturizing",
     "hydrating.": "Hydrating",
     "deep moistur": "Deep Moisture",
+    "deep moisturee": "Deep Moisture",
     "minimizing pore": "Minimizing Pores",
-    "oil-control & sebum control": "Oil Control",
-    "oil-control (indirect)": "Oil Control",
+    "minimizing poress": "Minimizing Pores",
+    "oil-control & sebum control": "Oil-Control",
+    "oil-control (indirect)": "Sebum Control",
     "pore care": "Pore-Care",
-    "dark spot fading": "Brightening",
+    "dark spot fading": "Dark Spot Fading",
+    "uv protection": "UV-Protection",
+    "anti-pollution": "Anti-Inflammatory",
+    "skin skin-smoothing": "Skin-Smoothing",
+    "skin-skin-smoothing": "Skin-Smoothing",
+    "soothig": "Soothing",
+    "combination": "Calming",
+    "black-spot": "Dark Spot Fading",
+    "microbiome care": "Anti-Inflammatory",
+    "refreshing": "Skin Barrier Support",
+    "smoothing": "Skin-Smoothing",
+    "normal": "Skin Barrier Support",
+    "no-whitecast": "Non-Comedogenic",
+    "skin barrier repair": "Barrier Repair",
+    "skin-barrier": "Barrier Repair"
 }
 
 # ================================
@@ -112,32 +148,32 @@ def preprocess_image(image):
 # ================================
 skin_problem_info = {
     "jerawat": {
-        "desc": "Merupakan kondisi peradangan pada kulit akibat pori-pori yang tersumbat oleh minyak (sebum), sel kulit mati, dan bakteri. Secara visual, ditandai dengan munculnya bintik merah, pustula, papula, atau komedo di area wajah.",
-        "img": "https://raw.githubusercontent.com/deayulianis/Penelitian-Ilmiah/refs/heads/main/acne_face_8.PNG"
+        "desc": "Merupakan kondisi peradangan pada kulit akibat pori-pori yang tersumbat oleh minyak (sebum), sel kulit mati, dan bakteri. Secara visual, ditandai dengan munculnya bintik merah, pustula, dan papula.",
+        "img": "https://raw.githubusercontent.com/deayulianis/skincarepintar/refs/heads/main/Pelengkap%20Gambar%20Apk/jerawat.PNG"
     },
     "pori-pori besar": {
-        "desc": "Ditandai dengan tampilan pori-pori kulit wajah yang terlihat lebih besar atau terbuka dari biasanya. Umumnya terlihat di area hidung, pipi, atau dahi, dan sering kali disebabkan oleh produksi minyak berlebih, penuaan, atau faktor genetik.",
-        "img": "https://raw.githubusercontent.com/deayulianis/Penelitian-Ilmiah/refs/heads/main/large_pores_face_15.jpg"
+        "desc": "Merupakan kondisi terjadinya produksi minyak berlebih dan faktor genetik. Secara visual, ditandai dengan dengan tampilan pori-pori kulit wajah yang terlihat lebih besar atau terbuka dari biasanya terlihat di area hidung, pipi, atau dahi.",
+        "img": "https://raw.githubusercontent.com/deayulianis/skincarepintar/refs/heads/main/Pelengkap%20Gambar%20Apk/pori%20besar.jpg"
     },
     "kulit kusam atau noda hitam": {
-        "desc": "Ciri utamanya adalah warna kulit yang tidak merata, tampak gelap, lelah, atau kurang bercahaya. Hal ini biasanya disebabkan oleh penumpukan sel kulit mati, paparan sinar matahari, kurang hidrasi, atau polusi lingkungan.",
-        "img": "https://raw.githubusercontent.com/deayulianis/Penelitian-Ilmiah/refs/heads/main/dull_skin_face_22.jpg"
+        "desc": "Merupakan kondisi disebabkan oleh penumpukan sel kulit mati, paparan sinar matahari, kurang hidrasi, atau polusi lingkungan. Secara visual, warna kulit yang tidak merata, tampak gelap, lelah, atau kurang bercahaya.",
+        "img": "https://raw.githubusercontent.com/deayulianis/skincarepintar/refs/heads/main/Pelengkap%20Gambar%20Apk/kusam.jpg"
     },
     "tanda-tanda penuaan": {
-        "desc": "Ditandai dengan munculnya kerutan halus, garis-garis wajah, atau flek hitam. Gejala ini umumnya muncul seiring bertambahnya usia atau akibat paparan sinar UV dalam jangka panjang yang merusak struktur kolagen kulit.",
-        "img": "https://raw.githubusercontent.com/deayulianis/Penelitian-Ilmiah/refs/heads/main/signs_of_aging_face_4.jpg"
+        "desc": "Merupakan kondisi disebabkan karena seiring bertambahnya usia atau akibat paparan sinar UV dalam jangka panjang yang merusak struktur kolagen kulit. Secara visual, munculnya kerutan halus dan garis-garis wajah.",
+        "img": "https://raw.githubusercontent.com/deayulianis/skincarepintar/refs/heads/main/Pelengkap%20Gambar%20Apk/penuaan.jpg"
     },
     "kulit sensitif atau Iritasi": {
-        "desc": "Ditandai dengan kemerahan, rasa gatal, perih, atau peradangan setelah penggunaan produk tertentu atau akibat faktor lingkungan. Kulit sensitif tampak lebih tipis dan mudah bereaksi terhadap zat aktif atau cuaca ekstrem.",
-        "img": "https://raw.githubusercontent.com/deayulianis/Penelitian-Ilmiah/refs/heads/main/sensitive_or_irritated_skin_face_1.jpg"
+        "desc": "Merupakan kondisi yang disebabkan kulit yang lebih tipis dan mudah bereaksi terhadap zat aktif atau cuaca ekstrem. Secara visual, kulit tampak kemerahan atau atau peradangan dan menimbulkan rasa gatal dan perih.",
+        "img": "https://raw.githubusercontent.com/deayulianis/skincarepintar/refs/heads/main/Pelengkap%20Gambar%20Apk/Iritasi.jpg"
     },
     "kulit kering atau Dehidrasi": {
-        "desc": "Ciri visualnya meliputi tekstur kulit yang kasar, bersisik, terlihat pecah-pecah, dan mudah mengelupas. Kondisi ini disebabkan oleh kurangnya kadar air dalam lapisan kulit dan bisa dipicu oleh cuaca dingin, kurangnya kelembapan, atau sabun yang terlalu keras.",
-        "img": "https://raw.githubusercontent.com/deayulianis/Penelitian-Ilmiah/refs/heads/main/dry_skin_face_2.jpeg"
+        "desc": "Merupakan kondisi yang disebabkan oleh kurangnya kadar air dalam lapisan kulit dan bisa dipicu oleh cuaca dingin, kurangnya kelembapan, atau sabun yang terlalu keras, Secara visual, meliputi tekstur kulit yang kasar, bersisik, terlihat pecah-pecah, dan mudah mengelupas. ",
+        "img": "https://raw.githubusercontent.com/deayulianis/skincarepintar/refs/heads/main/Pelengkap%20Gambar%20Apk/kering.JPG"
     },
     "produksi minyak berlebih": {
-        "desc": "Ditunjukkan oleh permukaan wajah yang tampak mengilap, terutama di area T-zone (dahi, hidung, dan dagu). Hal ini disebabkan oleh aktivitas kelenjar sebaceous yang memproduksi sebum dalam jumlah berlebihan.",
-        "img": "https://raw.githubusercontent.com/deayulianis/Penelitian-Ilmiah/refs/heads/main/oily_skin_face_50.jpg"
+        "desc": "Merupakan kondisi disebabkan oleh aktivitas kelenjar sebaceous yang memproduksi sebum dalam jumlah berlebihan. Secara visual, Ditunjukkan oleh permukaan wajah yang tampak mengilap, terutama di area T-zone (dahi, hidung, dan dagu).",
+        "img": "https://raw.githubusercontent.com/deayulianis/skincarepintar/refs/heads/main/Pelengkap%20Gambar%20Apk/produksi%20minyak%20berlebih.jpeg"
     },
 }
 
@@ -183,7 +219,7 @@ elif menu == "📷 Deteksi Masalah Kulit":
         st.success(f"✅ Masalah kulit terdeteksi: **{predicted_class}**")
         st.markdown("### 💡 Rekomendasi Produk")
 
-        top_n = st.slider("Jumlah Produk yang Ditampilkan", min_value=1, max_value=30, value=10)
+        top_n = st.slider("Jumlah Produk yang Ditampilkan", min_value=1, max_value=200, value=10)
         sort_option = st.selectbox("Urutkan Berdasarkan:", ["-- Relevansi --", "Nama Produk", "Harga", "Merek"])
         search_query = st.text_input("🔍 Cari Produk (opsional)", "")
         rekomendasi = content_based_recommender(predicted_class, top_n=top_n, sort_by=sort_option, search_query=search_query)
@@ -201,7 +237,7 @@ elif menu == "💡 Rekomendasi Manual":
     selected_problem = st.selectbox("Pilih masalah kulit:", list(problem_to_effects.keys()))
     
     # Pindahkan ke sini (di atas tombol!)
-    top_n = st.slider("Jumlah Produk yang Ditampilkan", min_value=1, max_value=30, value=10)
+    top_n = st.slider("Jumlah Produk yang Ditampilkan", min_value=1, max_value=200, value=10)
     sort_option = st.selectbox("Urutkan Berdasarkan:", ["-- Relevansi --", "Nama Produk", "Harga", "Merek"])
     search_query = st.text_input("🔍 Cari Produk (opsional)", "")
 
