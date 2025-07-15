@@ -16,7 +16,7 @@ st.title("🧴 Aplikasi Skincare Pintar")
 # Load Model & Dataset
 # ================================
 model = load_model("model50.h5", compile=False)
-df = pd.read_csv("https://raw.githubusercontent.com/deayulianis/coba/refs/heads/main/Skin%20Care%20Product.csv.csv")
+df = pd.read_csv("https://raw.githubusercontent.com/deayulianis/skincarepintar/refs/heads/main/Skin%20Care%20Product.csv")
 
 # ================================
 # Daftar Kelas dan Mapping
